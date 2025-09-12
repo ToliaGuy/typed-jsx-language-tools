@@ -2,6 +2,14 @@
   "name": "typed-jsx-vscode",
   "displayName": "Typed JSX",
   "description": "A VS Code extension for Typed JSX.",
+  "repository": {
+		"type": "git",
+		"url": "https://github.com/ToliaGuy/typed-jsx-language-tools.git",
+		"directory": "packages/vscode"
+	},
+	"categories": [
+		"Programming Languages"
+	],
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.55.0"
@@ -9,7 +17,12 @@
   "activationEvents": [
     "onLanguage:tsx"
   ],
-  "main": "./src/extension.js",
+  "main": "./dist/client.js",
+  "scripts": {
+		"build": "node scripts/build -- --minify",
+		"watch": "npm run build -- --watch",
+		"pack": "npm run build && vsce package --pre-release"
+	},
   "contributes": {
     "languages": [
       {
@@ -26,6 +39,8 @@
     "@volar/language-server": "^2.4.23",
     "@volar/vscode": "^2.4.23",
     "server": "link:..\\server",
-    "vscode-languageclient": "^9.0.1"
+    "vscode-languageclient": "^9.0.1",
+    "esbuild": "latest",
+    "vsce": "latest"
   }
 }
