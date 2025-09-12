@@ -5,19 +5,23 @@
   "version": "0.0.1",
   "main": "out/index.js",
   "files": [
-		"out/**/*.js",
-		"out/**/*.d.ts"
-	],
+    "out/**/*.js",
+    "out/**/*.d.ts"
+  ],
   "bin": {
-    "typed-jsx-language-server": "./bin/server.js"
+    "typed-jsx-language-server": "./bin/typed-jsx-language-server.js"
   },
   "packageManager": "pnpm@10.13.1",
   "dependencies": {
     "@volar/language-core": "^2.4.23",
     "@volar/language-server": "^2.4.23",
     "@volar/language-service": "^2.4.23",
+    "@volar/typescript": "^2.4.23",
     "volar-service-css": "^0.0.65",
+    "volar-service-emmet": "^0.0.65",
     "volar-service-html": "^0.0.65",
-    "vscode-html-languageservice": "^5.5.1"
+    "volar-service-typescript": "^0.0.65",
+    "vscode-html-languageservice": "^5.5.1",
+    "vscode-uri": "^3.1.0"
   }
 }

@@ -15,7 +15,7 @@
     "vscode": "^1.55.0"
   },
   "activationEvents": [
-    "onLanguage:tsx"
+    "onLanguage:html1"
   ],
   "main": "./dist/client.js",
   "scripts": {
@@ -26,9 +26,9 @@
   "contributes": {
     "languages": [
       {
-        "id": "tsx",
+        "id": "html1",
         "extensions": [
-          ".tsx"
+          ".html1"
         ]
       }
     ]
