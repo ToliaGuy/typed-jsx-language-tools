@@ -1,13 +1,31 @@
 {
-  "name": "vscode",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "name": "typed-jsx-vscode",
+  "displayName": "Typed JSX",
+  "description": "A VS Code extension for Typed JSX.",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.55.0"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "packageManager": "pnpm@10.13.1"
+  "activationEvents": [
+    "onLanguage:tsx"
+  ],
+  "main": "./src/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "tsx",
+        "extensions": [
+          ".tsx"
+        ]
+      }
+    ]
+  },
+  "packageManager": "pnpm@10.13.1",
+  "dependencies": {
+    "@types/vscode": "^1.104.0",
+    "@volar/language-server": "^2.4.23",
+    "@volar/vscode": "^2.4.23",
+    "server": "link:..\\server",
+    "vscode-languageclient": "^9.0.1"
+  }
 }
