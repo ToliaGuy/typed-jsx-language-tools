@@ -1,5 +1,3 @@
-import React from 'react';
-
 // Test JSX file for custom transformation
 const MyComponent = ({ name, age }) => {
   return (
@@ -12,6 +10,8 @@ const MyComponent = ({ name, age }) => {
     </div>
   );
 };
+
+const element1 = MyComponent
 
 const CustomButton = ({ children, onClick }) => (
   <button onClick={onClick} className="custom-btn">

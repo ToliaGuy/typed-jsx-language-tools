@@ -1,17 +1,16 @@
 import React from 'react';
 
-// Test TSX file for custom transformation
-interface Props {
-  name: string;
-  age: number;
+function createElement(...args: any){
+  return "test"
 }
 
-interface ButtonProps {
-  children: React.ReactNode;
-  onClick: () => void;
-}
-
-const MyComponent: React.FC<Props> = ({ name, age }) => {
+const MyComponent = ({
+  name,
+  age
+}: {
+  name: string,
+  age: number
+ }) => {
   return (
     <div className="container">
       <h1>Hello, {name}!</h1>
@@ -23,7 +22,9 @@ const MyComponent: React.FC<Props> = ({ name, age }) => {
   );
 };
 
-const CustomButton: React.FC<ButtonProps> = ({ children, onClick }) => (
+const element1 = MyComponent
+
+const CustomButton = ({ children, onClick }: { children: any, onClick: () => void }) => (
   <button onClick={onClick} className="custom-btn">
     {children}
   </button>
