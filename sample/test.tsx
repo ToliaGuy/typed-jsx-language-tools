@@ -1,5 +1,6 @@
+// needed for default ts
 import React from 'react';
-
+// needed for typed jsx extension
 function createElement(...args: any){
   return "test"
 }
