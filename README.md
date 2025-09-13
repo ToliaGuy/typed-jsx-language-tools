@@ -10,10 +10,11 @@ const element = <Option />;
 // Today, TypeScript sees this as:
 const element: JSX.Element
 ```
-
-![test](images/option-always-jsx-element.png)
-
 More context: [Type-safe children in React and TypeScript](https://www.totaltypescript.com/type-safe-children-in-react-and-typescript).
+
+
+But with the typed-jsx its a string as it supposed to be.
+![test](images/option-typed-vs-default.png)
 
 ### The solution
 Instead of asking TypeScript to typecheck JSX directly, we:
@@ -33,11 +34,18 @@ e.g. You can restrict the type for Components children
 But this allows building next gen frontend frameworks
 for example: Based on Effect-TS https://effect.website/
 
+[Effect-TS-framework](images/app-global-errors.png)
+
 
 You don't see just a happy path, but also what kinds of error components can fail with.
 
-And showing different UI for different error, much
+
+[show-fallback](images/catch-specific-error.png)
+And showing fallback UI for different errors, much
 more easily.
+
+After we took care of the error we already have two left
+[two-errors-left](images/app-after-catching-error.png)
 
 ### Current state
 This thing is barely working. I hope to get back to it whenever I have some free time.

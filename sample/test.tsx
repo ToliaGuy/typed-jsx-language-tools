@@ -31,4 +31,22 @@ const CustomButton = ({ children, onClick }: { children: any, onClick: () => voi
   </button>
 );
 
-export default MyComponent;
+//đexport default MyComponent;
+
+
+
+const Option = () =>
+  (<option />) as any as "I should be showing below!";
+
+
+
+
+
+
+
+const element = <Option />;
+
+
+
+export default element;
+
