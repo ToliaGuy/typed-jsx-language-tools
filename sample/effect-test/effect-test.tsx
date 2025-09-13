@@ -140,31 +140,19 @@ class NotFoundError extends Data.TaggedError("NotFoundError")<{
   readonly id: string
 }> {}
 
-const Heading = () =>
-  Effect.gen(function* () {
-    return yield* <h1>Hello World</h1>;
-  });
+const Heading = () => <h1>Hello World</h1>;
 
 const Paragraph = ({content}: {content: string}) =>
-  Effect.gen(function* () {
-    return yield* <p>{content}</p>;
-  });
+  <p>{content}</p>;
 
 const FailsWithNotFoundError = () =>
-  Effect.gen(function* () {
-    return yield* Effect.fail(new NotFoundError({ entity: "Item", id: "1" }))
-  })
+  Effect.fail(new NotFoundError({ entity: "Item", id: "1" }))
 
 
 const FailsWithMyCustomError = () =>
-  Effect.gen(function* () {
-    return yield* Effect.fail(new MyCustomError())
-  })
+  Effect.fail(new MyCustomError())
 
-const ValidationFallBack = () =>
-  Effect.gen(function* () {
-    return yield* <p>Validation failed</p>
-  })
+const ValidationFallBack = () => <p>Validation failed</p>
 
 const FailsValidation = ({ field, value }: { field: string; value: string }) =>
   Effect.gen(function* () {
@@ -176,17 +164,14 @@ const FailsValidation = ({ field, value }: { field: string; value: string }) =>
     return yield* <p>{field} is valid: {value}</p>
   }).pipe(
     Effect.catchTag("ValidationError", (error) => 
-      Effect.gen(function* () {
-        return yield* <ValidationFallBack/>
-      })
+      <ValidationFallBack/>
     )
   )
 
 
 
 const App = () =>
-  Effect.gen(function* () {
-    return yield* (
+    (
       <div id="root">
         <Heading />
         <Paragraph content="This is Effect-TS Frontend Framework" />
@@ -195,8 +180,6 @@ const App = () =>
         <FailsWithNotFoundError />
       </div>
     );
-  });
-
   
 
 export default App
