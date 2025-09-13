@@ -15,7 +15,8 @@
     "vscode": "^1.55.0"
   },
   "activationEvents": [
-    "onLanguage:html1"
+    "onLanguage:javascriptreact",
+    "onLanguage:typescriptreact"
   ],
   "main": "./dist/client.js",
   "scripts": {
@@ -23,16 +24,6 @@
 		"watch": "npm run build -- --watch",
 		"pack": "npm run build && vsce package --pre-release"
 	},
-  "contributes": {
-    "languages": [
-      {
-        "id": "html1",
-        "extensions": [
-          ".html1"
-        ]
-      }
-    ]
-  },
   "packageManager": "pnpm@10.13.1",
   "dependencies": {
     "@types/vscode": "^1.104.0",

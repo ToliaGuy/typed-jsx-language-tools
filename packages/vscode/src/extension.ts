@@ -1,5 +1,5 @@
 import * as serverProtocol from '@volar/language-server/protocol';
-import { activateAutoInsertion, createLabsInfo, getTsdk } from '@volar/vscode';
+import { createLabsInfo, getTsdk } from '@volar/vscode';
 import { BaseLanguageClient, LanguageClient, LanguageClientOptions, ServerOptions, TransportKind } from '@volar/vscode/node';
 import * as vscode from 'vscode';
 
@@ -23,7 +23,23 @@ export async function activate(context: vscode.ExtensionContext) {
 		},
 	};
 	const clientOptions: LanguageClientOptions = {
-		documentSelector: [{ language: 'html1' }],
+		documentSelector: [
+			{ language: 'javascriptreact' },
+			{ language: 'typescriptreact' }
+		],
+		middleware: {
+			async provideHover(document, position, token, next) {
+				const hover = await next(document, position, token);
+				if (!hover) {
+					return hover;
+				}
+				const header = new vscode.MarkdownString('', true);
+				header.supportThemeIcons = true;
+				header.appendMarkdown('$(zap) *Typed JSX*  \n');
+				const contents = Array.isArray(hover.contents) ? hover.contents : [hover.contents];
+				return new vscode.Hover([header, ...contents], hover.range);
+			},
+		},
 		initializationOptions: {
 			typescript: {
 				tsdk: (await getTsdk(context))!.tsdk,
@@ -31,15 +47,12 @@ export async function activate(context: vscode.ExtensionContext) {
 		},
 	};
 	client = new LanguageClient(
-		'html1-language-server',
-		'HTML1 Language Server',
+		'typed-jsx-language-server',
+		'Typed JSX Language Server',
 		serverOptions,
 		clientOptions,
 	);
 	await client.start();
-
-	// support for auto close tag
-	activateAutoInsertion('html1', client);
 
 	// support for https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volarjs-labs
 	// ref: https://twitter.com/johnsoncodehk/status/1656126976774791168
