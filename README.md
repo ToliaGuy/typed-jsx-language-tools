@@ -37,21 +37,19 @@ for example: Based on Effect-TS https://effect.website/
 
 ![Effect-TS-framework](images/app-global-errors.png)
 
-_Global errors view: see all possible errors at a glance._
-
-
-You don't see just a happy path, but also what kinds of error components can fail with.
+_This doesn't look as nice as React. But have you noticed? We are tracking all
+possible ways our UI can fail with in the typesystem. (MyCustomError, ValidationError, NotFoundError)_
 
 
 ![show-fallback](images/catch-specific-error.png)
-_Showing a specific fallback UI when a typed error is caught._
+_We can catch a specific error and show a fallback UI_
 And showing fallback UI for different errors, much
 more easily.
 
 After we took care of the error we already have two left
 ![two-errors-left](images/app-after-catching-error.png)
 
-_After handling one error, two remaining errors are shown._
+_After handling the ValidationError, typesystem shows two errors that we didn't handle yet._
 
 ### Current state
 For now this is done through language server. But also a solution should be made
