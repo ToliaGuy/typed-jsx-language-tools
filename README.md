@@ -53,4 +53,4 @@ _After handling the `ValidationError`, typesystem shows two errors that we didn'
 ### Current state
 This thing barely works. I hope to get back to it whenever I have more free time.
 
-If you have the right skillset to move things further, I would love to be help any way I can.
+If you have the right skillset to move things further, I would love to help, any way I can.
