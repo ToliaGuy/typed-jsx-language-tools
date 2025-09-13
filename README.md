@@ -33,24 +33,22 @@ This is similar to how Svelte handles `.svelte` files. See the Svelte language t
 ### Why should you care?
 Apart from that it improves typesafety of JSX overall.
 
-This allows us to build next level typesafe frontend frameworks.
+This allows us to build next level UI frameworks (with insane typesafety).
 e.g. Based on [Effect-TS](https://effect.website/)
 
 ![Effect-TS-framework](images/app-global-errors.png)
 
 _This doesn't look as nice as React. But have you noticed? We are tracking all
-possible ways our UI can fail with in the typesystem. (MyCustomError, ValidationError, NotFoundError)_
+possible ways our UI can fail within the typesystem. (`MyCustomError`, `ValidationError`, `NotFoundError`)_
 
 
 ![show-fallback](images/catch-specific-error.png)
 _We can catch a specific error and show a fallback UI_
-And showing fallback UI for different errors, much
-more easily.
 
-After we took care of the error we already have two left
+After we took care of the error we only have two left
 ![two-errors-left](images/app-after-catching-error.png)
 
-_After handling the ValidationError, typesystem shows two errors that we didn't handle yet._
+_After handling the `ValidationError`, typesystem shows two errors that we didn't handle yet. (`MyCustomError`, `NotFoundError`)_
 
 ### Current state
 For now this is done through language server. But also a solution should be made

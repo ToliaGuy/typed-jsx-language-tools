@@ -175,9 +175,11 @@ const FailsValidation = ({ field, value }: { field: string; value: string }) =>
     }
     return yield* <p>{field} is valid: {value}</p>
   }).pipe(
-    Effect.catchTag("ValidationError", (error) => {
-      return ValidationFallBack()
-    })
+    Effect.catchTag("ValidationError", (error) => 
+      Effect.gen(function* () {
+        return yield* <ValidationFallBack/>
+      })
+    )
   )
 
 
