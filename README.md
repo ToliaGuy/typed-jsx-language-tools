@@ -51,6 +51,6 @@ After we took care of the error we only have two left
 _After handling the `ValidationError`, typesystem shows two errors that we didn't handle yet. (`MyCustomError`, `NotFoundError`)_
 
 ### Current state
-This thing is barely working. I hope to get back to it whenever I have some free time.
+This thing barely works. I hope to get back to it whenever I have more free time.
 
-If you have the right skillset to move things further much faster, I would love to be helpful.
+If you have the right skillset to move things further, I would love to be help any way I can.
