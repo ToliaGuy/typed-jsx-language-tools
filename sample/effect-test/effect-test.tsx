@@ -131,6 +131,14 @@ export function createElement<
 }
 
 class MyCustomError extends Data.TaggedError("MyCustomError")<{}> {}
+class ValidationError extends Data.TaggedError("ValidationError")<{
+  readonly field: string
+  readonly reason: string
+}> {}
+class NotFoundError extends Data.TaggedError("NotFoundError")<{
+  readonly entity: string
+  readonly id: string
+}> {}
 
 const Heading = () =>
   Effect.gen(function* () {
@@ -142,29 +150,51 @@ const Paragraph = ({content}: {content: string}) =>
     return yield* <p>{content}</p>;
   });
 
-const MyComponent = () =>
+const FailsWithNotFoundError = () =>
   Effect.gen(function* () {
-    return yield* Effect.fail(new MyCustomError());
-    return yield* (
-      <div>
-        <Heading />
-        <Paragraph content="This is MyComponent" />
-      </div>
-    );
-  });
+    return yield* Effect.fail(new NotFoundError({ entity: "Item", id: "1" }))
+  })
+
+
+const FailsWithMyCustomError = () =>
+  Effect.gen(function* () {
+    return yield* Effect.fail(new MyCustomError())
+  })
+
+const ValidationFallBack = () =>
+  Effect.gen(function* () {
+    return yield* <p>Validation failed</p>
+  })
+
+const FailsValidation = ({ field, value }: { field: string; value: string }) =>
+  Effect.gen(function* () {
+    if (value.trim().length === 0) {
+      return yield* Effect.fail(
+        new ValidationError({ field, reason: "Must not be empty" })
+      )
+    }
+    return yield* <p>{field} is valid: {value}</p>
+  }).pipe(
+    Effect.catchTag("ValidationError", (error) => {
+      return ValidationFallBack()
+    })
+  )
+
+
 
 const App = () =>
   Effect.gen(function* () {
     return yield* (
       <div id="root">
         <Heading />
-        <Heading />
-        <Heading />
-        <Paragraph content="This is Effect-TS VDOM with JSX" />
-        <MyComponent />
-        <p>This is Effect-TS VDOM with JSX</p>
+        <Paragraph content="This is Effect-TS Frontend Framework" />
+        <FailsValidation field="username" value="fake123"/>
+        <FailsWithMyCustomError/>
+        <FailsWithNotFoundError />
       </div>
     );
   });
+
+  
 
 export default App
