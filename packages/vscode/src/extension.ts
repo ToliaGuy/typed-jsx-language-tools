@@ -36,8 +36,10 @@ export async function activate(context: vscode.ExtensionContext) {
 				const header = new vscode.MarkdownString('', true);
 				header.supportThemeIcons = true;
 				header.appendMarkdown('$(zap) *Typed JSX*  \n');
+				const footer = new vscode.MarkdownString('', true);
+				footer.appendMarkdown('Default JSX:  \n');
 				const contents = Array.isArray(hover.contents) ? hover.contents : [hover.contents];
-				return new vscode.Hover([header, ...contents], hover.range);
+				return new vscode.Hover([header, ...contents, footer], hover.range);
 			},
 		},
 		initializationOptions: {
