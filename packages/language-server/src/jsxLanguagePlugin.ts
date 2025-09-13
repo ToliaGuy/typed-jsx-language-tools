@@ -6,6 +6,7 @@ import { transformSync, type BabelFileResult } from '@babel/core';
 // @ts-ignore - plugin has no types
 import jsxTransform from '@babel/plugin-transform-react-jsx';
 import { decode as decodeMappings } from '@jridgewell/sourcemap-codec';
+import * as babelParser from '@babel/parser';
 
 export const jsxLanguagePlugin: LanguagePlugin<URI> = {
 	getLanguageId(uri) {
@@ -138,7 +139,7 @@ export class JsxVirtualCode implements VirtualCode {
 					completion: true,
 					format: true,
 					navigation: true,
-					semantic: true,
+					semantic: { shouldHighlight: () => false },
 					structure: true,
 					verification: true,
 				},
@@ -175,14 +176,14 @@ export class JsxVirtualCode implements VirtualCode {
 					completion: true,
 					format: true,
 					navigation: true,
-					semantic: true,
+					semantic: { shouldHighlight: () => false },
 					structure: true,
 					verification: true,
 				},
 			}];
 		}
 		points.sort((a, b) => a.gen - b.gen);
-		const mappings: CodeMapping[] = [];
+		let mappings: CodeMapping[] = [];
 		for (let i = 0; i < points.length; i++) {
 			const cur = points[i];
 			const next = points[i + 1];
@@ -200,16 +201,109 @@ export class JsxVirtualCode implements VirtualCode {
 					completion: true,
 					format: true,
 					navigation: true,
-					semantic: true,
+					semantic: { shouldHighlight: () => false },
 					structure: true,
 					verification: true,
 				},
 			});
 		}
+		// Add synthetic mappings for closing tag names to mirror opening tag hovers
+		const pairs = collectJsxNamePairs(this.originalText);
+		mappings = addClosingTagHoverMappings(mappings, pairs);
 		return mappings;
 	}
 
 	// snapshot is provided in constructor and reflects transformed code
+}
+
+type JsxNamePair = { openStart: number; openEnd: number; closeStart: number; closeEnd: number };
+
+function collectJsxNamePairs(code: string): JsxNamePair[] {
+	const pairs: JsxNamePair[] = [];
+	let ast: any;
+	try {
+		ast = babelParser.parse(code, {
+			sourceType: 'module',
+			plugins: ['typescript', 'jsx'],
+			allowReturnOutsideFunction: false,
+			allowAwaitOutsideFunction: false,
+			errorRecovery: true,
+		});
+	} catch {
+		return pairs;
+	}
+	const stack: any[] = [ast];
+	while (stack.length) {
+		const node = stack.pop();
+		if (!node || typeof node !== 'object') continue;
+		if (node.type === 'JSXElement') {
+			const opening = node.openingElement;
+			const closing = node.closingElement;
+			if (
+				opening?.name &&
+				typeof opening.name.start === 'number' &&
+				typeof opening.name.end === 'number' &&
+				closing?.name &&
+				typeof closing.name.start === 'number' &&
+				typeof closing.name.end === 'number'
+			) {
+				pairs.push({
+					openStart: opening.name.start,
+					openEnd: opening.name.end,
+					closeStart: closing.name.start,
+					closeEnd: closing.name.end,
+				});
+			}
+		}
+		for (const key in node) {
+			const value = (node as any)[key];
+			if (Array.isArray(value)) {
+				for (let i = 0; i < value.length; i++) stack.push(value[i]);
+			} else if (value && typeof value === 'object') {
+				stack.push(value);
+			}
+		}
+	}
+	return pairs;
+}
+
+function addClosingTagHoverMappings(mappings: CodeMapping[], pairs: JsxNamePair[]): CodeMapping[] {
+	if (!pairs.length) return mappings;
+	const result = mappings.slice();
+	for (const p of pairs) {
+		const closeLen = Math.max(0, p.closeEnd - p.closeStart);
+		if (closeLen <= 0) continue;
+		// Skip if closing already covered by any mapping
+		const covered = result.some(m => {
+			const s = m.sourceOffsets[0];
+			const l = m.lengths[0];
+			return p.closeStart >= s && p.closeStart < s + l;
+		});
+		if (covered) continue;
+		// Find opening mapping and mirror its generated offset
+		const openMap = result.find(m => {
+			const s = m.sourceOffsets[0];
+			const l = m.lengths[0];
+			return p.openStart >= s && p.openStart < s + l;
+		});
+		if (!openMap) continue;
+		const offsetInMap = p.openStart - openMap.sourceOffsets[0];
+		const genOffset = openMap.generatedOffsets[0] + offsetInMap;
+		result.push({
+			sourceOffsets: [p.closeStart],
+			generatedOffsets: [genOffset],
+			lengths: [closeLen],
+			data: {
+				completion: true,
+				format: true,
+				navigation: true,
+				semantic: { shouldHighlight: () => false },
+				structure: true,
+				verification: true,
+			},
+		});
+	}
+	return result;
 }
 function computeLineStarts(text: string): number[] {
 	const starts: number[] = [0];
