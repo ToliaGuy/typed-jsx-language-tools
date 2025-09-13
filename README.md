@@ -15,14 +15,15 @@ const element: JSX.Element
 More context: [Type-safe children in React and TypeScript](https://www.totaltypescript.com/type-safe-children-in-react-and-typescript).
 
 
-But with the typed-jsx the type is a `string` as it is supposed to be.
+But with the **typed-jsx-language-tools** the type is a `string` as it is supposed to be.
+
 ![test](images/option-typed-vs-default.png)
 
-_Typed vs default: correct `string` inference for children._
+_Typed JSX vs Default behaviour_
 
 ### The solution
 Instead of asking TypeScript to typecheck JSX directly, we:
-- Transform JSX into plain TS with source maps.
+- Transform JSX into plain TS.
 - Get the TypeScript language service to typecheck that TS.
 - Map the results back to the original TSX so hovers and diagnostics point to the right place.
 
@@ -30,10 +31,10 @@ This is similar to how Svelte handles `.svelte` files. See the Svelte language t
 
 
 ### Why should you care?
-This improves typesafety of JSX overall.
+Apart from that it improves typesafety of JSX overall.
 
-But whats better, this allows for building next gen typesafe frontend frameworks
-for example: Based on Effect-TS https://effect.website/
+This allows us to build next level typesafe frontend frameworks.
+e.g. Based on [Effect-TS](https://effect.website/)
 
 ![Effect-TS-framework](images/app-global-errors.png)
 
