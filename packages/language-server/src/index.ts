@@ -12,7 +12,7 @@ connection.onInitialize(params => {
 	return server.initialize(
 		params,
 		createTypeScriptProject(tsdk.typescript, tsdk.diagnosticMessages, () => ({
-			languagePlugins: [],
+			languagePlugins: [jsxLanguagePlugin],
 		})),
 		[
 			...createTypeScriptServices(tsdk.typescript)
