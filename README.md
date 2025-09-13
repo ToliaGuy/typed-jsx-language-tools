@@ -15,7 +15,7 @@ const element: JSX.Element
 More context: [Type-safe children in React and TypeScript](https://www.totaltypescript.com/type-safe-children-in-react-and-typescript).
 
 
-But with the **typed-jsx-language-tools** the type is a `string` as it is supposed to be.
+But with the **typed-jsx-language-tools** the type is correct.
 
 ![test](images/option-typed-vs-default.png)
 
@@ -31,14 +31,14 @@ This is similar to how Svelte handles `.svelte` files. See the Svelte language t
 
 
 ### Why should you care?
-Apart from that it improves typesafety of JSX overall.
+Apart from that it improves overall typesafety of JSX.
 
 This allows us to build next level UI frameworks (with insane typesafety).
 e.g. Based on [Effect-TS](https://effect.website/)
 
 ![Effect-TS-framework](images/app-global-errors.png)
 
-_This doesn't look as nice as React. But have you noticed? We are tracking all
+_This looks uglier than React. But have you noticed? We are tracking all
 possible ways our UI can fail within the typesystem. (`MyCustomError`, `ValidationError`, `NotFoundError`)_
 
 
@@ -51,9 +51,6 @@ After we took care of the error we only have two left
 _After handling the `ValidationError`, typesystem shows two errors that we didn't handle yet. (`MyCustomError`, `NotFoundError`)_
 
 ### Current state
-For now this is done through language server. But also a solution should be made
-for typechecking at compile time (ts-patch could work)
-
 This thing is barely working. I hope to get back to it whenever I have some free time.
 
 If you have the right skillset to move things further much faster, I would love to be helpful.
